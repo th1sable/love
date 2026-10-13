@@ -1,0 +1,2 @@
+import { defineConfig } from '@playwright/test';
+export default defineConfig({testDir:'./tests/browser',timeout:30000,workers:1,retries:0,reporter:'list',outputDir:'.temp/browser-results',use:{baseURL:'http://127.0.0.1:4173',channel:'chrome',headless:true,viewport:{width:390,height:844},timezoneId:'Europe/Rome',screenshot:'only-on-failure'},webServer:{command:'node scripts/qa-server.cjs',url:'http://127.0.0.1:4173',reuseExistingServer:false,timeout:15000}});

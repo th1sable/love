@@ -1,6 +1,6 @@
 # Conferma email e recupero password
 
-L’app passa sempre `https://love-prova-cuore-giallo.thisable.chatgpt.site/auth/confirm` come ritorno per registrazione, nuova conferma e reset password. Questa pagina legge il risultato della verifica, mostra successo o errore e apre la schermata per la nuova password nei flussi di recupero. I token vengono rimossi dall’indirizzo dopo la verifica.
+L’app passa sempre `https://love-prova-cuore-giallo.thisable.chatgpt.site/auth/confirm` come ritorno per registrazione, nuova conferma e reset password. Questa pagina legge il risultato della verifica, mostra successo o errore e apre la schermata per la nuova password nei flussi di recupero. Nella build nativa registrazione e recupero usano love://auth/confirm e il callback segue anche i collegamenti ricevuti quando l’app è già aperta. I token vengono rimossi dall’indirizzo dopo la verifica.
 
 **La configurazione del servizio non è stata modificata:** il connettore Supabase non espone le impostazioni Auth, non è disponibile un token Management API e il controllo del browser non si avvia in questo ambiente. Il problema localhost non può essere considerato risolto finché il servizio non viene configurato e verificato con una nuova email.
 

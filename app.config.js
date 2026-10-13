@@ -7,5 +7,5 @@ module.exports=()=>{
   if(key&&!key.startsWith('sb_publishable_'))throw new Error('Nell’app e consentita soltanto una chiave Supabase publishable. Non usare chiavi secret o service_role.');
   if(!deployment.publishableKey.startsWith('sb_publishable_'))throw new Error('La configurazione del progetto deve contenere soltanto una chiave publishable.');
   if(url){const parsed=new URL(url);if(parsed.protocol!=='https:'&&!['localhost','127.0.0.1'].includes(parsed.hostname))throw new Error('La connessione al servizio della coppia deve usare HTTPS.');}
-  return base.expo;
+  return {...base.expo,android:{...base.expo.android,...(process.env.GOOGLE_SERVICES_JSON?{googleServicesFile:process.env.GOOGLE_SERVICES_JSON}:{})}};
 };

@@ -1,6 +1,7 @@
+import { Platform } from 'react-native';
 import { supabase } from './client';
 export const APP_ORIGIN='https://love-prova-cuore-giallo.thisable.chatgpt.site';
-export const authRedirect=`${APP_ORIGIN}/auth/confirm`;
+export const authRedirect=Platform.OS==='web'?`${APP_ORIGIN}/auth/confirm`:'love://auth/confirm';
 export async function completeAuthLink(raw:string):Promise<{recovery:boolean}> {
   if(!supabase)throw new Error('Collegamento non disponibile.');
   const url=new URL(raw);const query=url.searchParams;const hash=new URLSearchParams(url.hash.slice(1));

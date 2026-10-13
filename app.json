@@ -41,6 +41,13 @@
           "microphonePermission": false
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "93d7bf81-70ed-470a-8137-bb999ce70adb"
+      }
+    },
+    "owner": "thisable"
   }
 }

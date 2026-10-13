@@ -2,15 +2,15 @@
 
 Il client per iOS/Android registra il telefono da **Profilo → Attiva le notifiche su questo telefono**. Il browser e Expo Go mostrano il limite senza simulare una consegna. Uscire dall’account disattiva prima il dispositivo, per evitare che riceva contenuti di un vecchio account.
 
-## Stato attuale
+## Stato attuale — 13 ottobre 2026
 
-- `notifications-core.sql` è installato nel progetto love: dispositivi e coda sono privati, senza lettura diretta dai client.
-- `notifications-network.sql` è scritto e verificato con risposte HTTP simulate, ma **non è attivo sul servizio reale**.
-- Il controllo automatico ha rifiutato l’attivazione di pg_net/cron perché trasmetterebbe testi personali e token dei telefoni a Expo. Serve l’approvazione esplicita di Luigi per questa destinazione e questi dati.
-- Nessuna notifica reale è stata inviata durante i test.
-- Serve una build firmata, il vero EAS projectId e le credenziali APNs/FCM. Esportare un bundle non crea un’app installabile.
+- Core e dispatcher installati sul progetto love.
+- pg_net/pg_cron attivi; love-push-dispatch esegue il dispatcher ogni minuto. Accesso diretto negato ad anon/authenticated.
+- Attivazione eseguita dopo la richiesta di Luigi di attivare le notifiche, con precedente informazione sui dati trasmessi a Expo: nome del mittente, testo e token del dispositivo.
+- Zero dispositivi registrati e zero consegne alla verifica: nessuna ricezione su telefoni dichiarata.
+- Progetto EAS @thisable/love collegato con ID 93d7bf81-70ed-470a-8137-bb999ce70adb. Firma delle build e credenziali APNs/FCM ancora da completare.
 
-## Invio previsto dopo l’approvazione
+## Invio attivo sul server
 
 La coda usa solo il destinatario ricavato dalla coppia autenticata. Un salvataggio di umore, bisogno e pensiero produce un solo evento. Ogni gesto produce il proprio evento. Diario, calendario, liste, idee e obiettivi non producono notifiche.
 
@@ -20,7 +20,7 @@ L’invio parte dopo il commit, indipendentemente dall’app aperta. Il processo
 
 Gli invii iniziali scadono dopo 10 minuti; gli stati del giorno prima non vengono inviati dopo mezzanotte italiana. La cronologia dei gesti non viene mostrata nell’app. I metadati tecnici della coda restano privati per gestire invii e ricevute.
 
-Dopo l’approvazione: abilitare pg_net e pg_cron, applicare `notifications-network.sql`, revocare l’accesso client agli schemi net/cron e programmare `private.process_push_queue()` ogni minuto. Non attivare automaticamente questa parte con CI.
+Per riprodurre la configurazione: abilitare pg_net e pg_cron, applicare `notifications-network.sql`, revocare l’accesso client agli schemi net/cron e programmare `private.process_push_queue()` ogni minuto. Non attivare automaticamente questa parte con CI.
 
 ## Collaudo sui telefoni
 

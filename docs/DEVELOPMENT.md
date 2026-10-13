@@ -59,7 +59,7 @@ Il progetto dedicato love e gia attivo. Restano da completare i controlli di ril
 6. Eventi personali inviati come singolo aggiornamento e singola notifica. Diario e organizzazione restano silenziosi.
 7. Test con due account e un terzo estraneo, su iOS e Android. Verificare che il terzo account non possa leggere o modificare dati della coppia.
 
-La funzione `shouldNotifyPartner` fissa la regola, ma non invia notifiche. La coda privata è installata. Il dispatcher esterno è scritto e testato ma non attivo, in attesa di approvazione esplicita.
+La funzione `shouldNotifyPartner` fissa la regola, ma non invia notifiche. La coda privata è installata. Il dispatcher esterno è attivo dal 13 ottobre 2026, dopo la richiesta di attivazione di Luigi. La consegna richiede build native e credenziali APNs/FCM.
 
 ## Logo
 

@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.9",
+    "@playwright/test": "^1.64.0",
     "@types/node": "26.6.5",
     "@types/react": "~19.2.2",
     "eslint": "^9.39.5",
@@ -43,7 +44,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "icons": "node scripts/make-icons.cjs",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "test:browser": "playwright test"
   },
   "private": true,
   "overrides": {
