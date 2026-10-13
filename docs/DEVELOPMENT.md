@@ -30,10 +30,12 @@ npx expo export --platform all
 - Diario con data giorno/mese/anno e calendario compatto.
 - «Da quanto stiamo insieme»: data del fidanzamento condivisa, anni/mesi/giorni, giorni totali e prossimo anniversario. Disponibile in Noi e modificabile in Profilo. La data è un record calendario condiviso con id stabile, aggiornato senza notifiche.
 - Password visibile/nascosta, recupero password, reinvio conferma e pagina di risposta al link email. Il ritorno Supabase va ancora configurato: vedi docs/AUTH-SETUP.md.
-- Cuore che batte, entrata morbida delle schermate, feedback sui pulsanti e rispetto delle impostazioni per ridurre le animazioni.
+- Un solo cuore visibile nell’intestazione in alto a destra, anche su accesso e conferma email. Battito, entrata morbida delle schermate, feedback sui pulsanti e rispetto delle impostazioni per ridurre le animazioni.
+- Moduli di organizzazione aperti solo su richiesta, completati nascosti/visibili, ritorno al giorno di oggi e possibilità di cambiare la data di un impegno. Conferme di salvataggio sempre visibili e richiudibili.
 - Umore, bisogno e pensiero si svuotano a mezzanotte italiana, anche riaprendo l’app dopo il cambio giorno.
 - Salvataggio su dispositivo, caricamento e gestione degli errori.
 - Icona a cuore giallo per iOS, Android e web.
+- Album privati, caricamento multiplo, galleria Giorni/Mesi/Anni, date delle foto selezionabili, raccolte modificabili e apertura a schermo intero. Vedi docs/ALBUMS.md.
 
 ## Modalita collegata
 
@@ -41,7 +43,7 @@ Account, inviti e sincronizzazione sono collegati al progetto love. La guida doc
 
 ## Da attivare o completare
 
-Collaudo su due telefoni, impostazioni di ritorno e consegna delle email, attivazione autorizzata del servizio push, build firmate e credenziali Apple/Google, foto, risposte alle pagine, indicatore delle novità del partner, gestione degli obiettivi economici e pubblicazione negli store. Vedi docs/AUTH-SETUP.md e docs/NOTIFICATIONS.md.
+Collaudo su due telefoni, impostazioni di ritorno e consegna delle email, attivazione autorizzata del servizio push, build firmate e credenziali Apple/Google, foto nelle pagine del diario, risposte alle pagine, indicatore delle novità del partner, gestione degli obiettivi economici e pubblicazione negli store. Vedi docs/AUTH-SETUP.md e docs/NOTIFICATIONS.md.
 
 Non vengono simulati messaggi ricevuti dal partner. I gesti salvati in questa versione non sono inviati ad altri telefoni. Il banner nella UI comunica il limite.
 

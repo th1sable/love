@@ -32,6 +32,14 @@
           "color": "#F5D367",
           "defaultChannel": "love"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Scegli le foto da conservare nei vostri album privati.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
       ]
     ]
   }

@@ -10,5 +10,5 @@ if(fs.existsSync(oldJs))for(const entry of fs.readdirSync(oldJs)){const file=pat
 fs.cpSync(path.join(root,'dist'),target,{recursive:true,filter:source=>!/[\\/]static[\\/]js[\\/](android|ios)([\\/]|$)/.test(source)&&!source.endsWith('metadata.json')});
 const html=fs.readFileSync(path.join(target,'index.html'),'utf8').replace('<html lang="en">','<html lang="it">').replace('You need to enable JavaScript to run this app.','Attiva JavaScript per aprire love.');
 fs.writeFileSync(path.join(target,'index.html'),html);
-for(const route of ['pagine','insieme','profilo','auth/confirm']){fs.mkdirSync(path.join(target,route),{recursive:true});fs.writeFileSync(path.join(target,route,'index.html'),html);}
+for(const route of ['pagine','album','insieme','profilo','auth/confirm']){fs.mkdirSync(path.join(target,route),{recursive:true});fs.writeFileSync(path.join(target,route,'index.html'),html);}
 console.log('Anteprima web e pagina di conferma preparate.');

@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { adjacentMonth, dateNumber, dayKey, monthCells } from '../dates';
 export function Calendar({value,onChange,marked=[]}:{value:string;onChange:(date:string)=>void;marked?:string[]}){
-  const [month,setMonth]=useState(value.slice(0,7)||dayKey().slice(0,7));
+  const selectedMonth=value.slice(0,7)||dayKey().slice(0,7);
+  const [navigation,setNavigation]=useState({anchor:selectedMonth,offset:0});
+  const offset=navigation.anchor===selectedMonth?navigation.offset:0;
+  const month=adjacentMonth(selectedMonth,offset);
+  const move=(delta:number)=>setNavigation({anchor:selectedMonth,offset:offset+delta});
   const monthTitle=new Date(`${month}-01T12:00:00`).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
-  return <View style={s.calendar}><View style={s.heading}><Pressable accessibilityRole="button" accessibilityLabel="Mese precedente" onPress={()=>setMonth(adjacentMonth(month,-1))} style={s.arrow}><Text style={s.arrowText}>‹</Text></Pressable><Text style={s.title}>{monthTitle}</Text><Pressable accessibilityRole="button" accessibilityLabel="Mese successivo" onPress={()=>setMonth(adjacentMonth(month,1))} style={s.arrow}><Text style={s.arrowText}>›</Text></Pressable></View><View style={s.grid}>{['L','M','M','G','V','S','D'].map((d,i)=><View key={`day-${i}`} style={s.cell}><Text style={s.weekday}>{d}</Text></View>)}{monthCells(month).map((d,i)=><View key={d??`empty-${i}`} style={s.cell}>{d&&<Pressable accessibilityRole="button" accessibilityLabel={dateNumber(d)} accessibilityState={{selected:d===value}} onPress={()=>onChange(d)} style={[s.day,d===dayKey()&&s.today,d===value&&s.selected]}><Text style={[s.number,d===value&&{fontWeight:'800'}]}>{Number(d.slice(-2))}</Text>{marked.includes(d)&&<View style={[s.dot,d===value&&{backgroundColor:'#554014'}]}/>}</Pressable>}</View>)}</View></View>;
+  return <View style={s.calendar}><View style={s.heading}><Pressable accessibilityRole="button" accessibilityLabel="Mese precedente" onPress={()=>move(-1)} style={s.arrow}><Text style={s.arrowText}>‹</Text></Pressable><Text style={s.title}>{monthTitle}</Text><Pressable accessibilityRole="button" accessibilityLabel="Mese successivo" onPress={()=>move(1)} style={s.arrow}><Text style={s.arrowText}>›</Text></Pressable></View><View style={s.grid}>{['L','M','M','G','V','S','D'].map((d,i)=><View key={`day-${i}`} style={s.cell}><Text style={s.weekday}>{d}</Text></View>)}{monthCells(month).map((d,i)=><View key={d??`empty-${i}`} style={s.cell}>{d&&<Pressable accessibilityRole="button" accessibilityLabel={dateNumber(d)} accessibilityState={{selected:d===value}} onPress={()=>onChange(d)} style={[s.day,d===dayKey()&&s.today,d===value&&s.selected]}><Text style={[s.number,d===value&&{fontWeight:'800'}]}>{Number(d.slice(-2))}</Text>{marked.includes(d)&&<View style={[s.dot,d===value&&{backgroundColor:'#554014'}]}/>}</Pressable>}</View>)}</View></View>;
 }
 export function DatePicker({label,value,onChange}:{label:string;value:string;onChange:(date:string)=>void}){
   const [open,setOpen]=useState(false);

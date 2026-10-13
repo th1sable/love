@@ -50,6 +50,10 @@ Ogni pagina può contenere titolo, data, pensieri, foto ed emoji. Quando viene s
 
 Le pagine sono ordinate per data e possono essere segnate come preferite. Nuove pagine, risposte e modifiche si sincronizzano senza inviare notifiche sul telefono.
 
+## Album privati
+
+Create raccolte con titolo e data, scegliete più foto dal telefono e sfogliatele per **giorni, mesi e anni**, oppure per album. Ogni gruppo di foto può avere una data diversa. Le immagini si aprono a schermo intero; negli account collegati foto e album restano privati alla coppia e si aggiornano senza notifiche. Nella prova vengono conservati soltanto sul dispositivo. Vedi [la guida Album](docs/ALBUMS.md).
+
 ## Spazio condiviso
 
 - **Calendario:** appuntamenti, anniversari e impegni, per organizzare il tempo insieme.
