@@ -4,7 +4,22 @@ Uno spazio per due, per sentirsi vicini e organizzare la vita insieme.
 
 **love** è un progetto di app per **iOS e Android** dedicata alla coppia. Due account collegati condividono stati d’animo, pensieri, gesti affettuosi, ricordi e attività quotidiane.
 
-> **Stato del progetto:** fase di progettazione. Questo README descrive le funzioni concordate da sviluppare; non indica funzionalità già disponibili. Tecnologie, istruzioni di avvio e distribuzione verranno documentate quando sarà presente l’implementazione.
+> **Stato del progetto:** prima versione locale con Expo e React Native per iOS e Android. Stati d’animo, gesti, diario testuale e organizzazione si salvano sul dispositivo. Account, sincronizzazione tra telefoni e notifiche non sono ancora attivi; le sezioni seguenti descrivono anche il comportamento previsto della versione collegata.
+
+**Logo:** un cuore giallo su fondo avorio 💛.
+
+## Avvio della prima versione
+
+Richiede Node.js 22.13 o successivo.
+
+```sh
+npm ci
+npm start
+```
+
+Per controllare il progetto: `npm run typecheck`, `npm test` e `npx expo export --platform all`.
+
+Vedi [la guida di sviluppo](docs/DEVELOPMENT.md) per funzioni già implementate, limiti e prossimo passo. I contenuti locali non vengono ancora inviati al partner.
 
 ## Come funziona
 
