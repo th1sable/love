@@ -23,9 +23,15 @@ npx expo export --platform all
 ## Funziona ora
 
 - Nomi e stato personale (umore, bisogno e pensiero).
-- Gesti con animazione e cronologia locale.
+- Gesti senza cronologia visibile; notifiche predisposte, con attivazione esterna ancora in attesa.
 - Diario: creazione, modifica, date, ordinamento e preferiti.
-- Calendario come elenco di appuntamenti, promemoria, liste, idee e obiettivi: aggiunta e completamento.
+- Calendario a griglia con impegni, orario, annotazioni e modifica. Promemoria rimossi dalla navigazione; i vecchi dati si possono trasferire nel calendario.
+- Liste spiegate con esempi, proposte per uscire da scegliere insieme e obiettivi con una data entro cui realizzarli.
+- Diario con data giorno/mese/anno e calendario compatto.
+- «Da quanto stiamo insieme»: data del fidanzamento condivisa, anni/mesi/giorni, giorni totali e prossimo anniversario. Disponibile in Noi e modificabile in Profilo. La data è un record calendario condiviso con id stabile, aggiornato senza notifiche.
+- Password visibile/nascosta, recupero password, reinvio conferma e pagina di risposta al link email. Il ritorno Supabase va ancora configurato: vedi docs/AUTH-SETUP.md.
+- Cuore che batte, entrata morbida delle schermate, feedback sui pulsanti e rispetto delle impostazioni per ridurre le animazioni.
+- Umore, bisogno e pensiero si svuotano a mezzanotte italiana, anche riaprendo l’app dopo il cambio giorno.
 - Salvataggio su dispositivo, caricamento e gestione degli errori.
 - Icona a cuore giallo per iOS, Android e web.
 
@@ -35,7 +41,7 @@ Account, inviti e sincronizzazione sono collegati al progetto love. La guida doc
 
 ## Da attivare o completare
 
-Collaudo su due telefoni e configurazione/consegna delle email di conferma, recupero password, notifiche push, foto, risposte alle pagine, avvisi programmati, indicatore delle novita' del partner, gestione avanzata degli obiettivi economici e pubblicazione negli store.
+Collaudo su due telefoni, impostazioni di ritorno e consegna delle email, attivazione autorizzata del servizio push, build firmate e credenziali Apple/Google, foto, risposte alle pagine, indicatore delle novità del partner, gestione degli obiettivi economici e pubblicazione negli store. Vedi docs/AUTH-SETUP.md e docs/NOTIFICATIONS.md.
 
 Non vengono simulati messaggi ricevuti dal partner. I gesti salvati in questa versione non sono inviati ad altri telefoni. Il banner nella UI comunica il limite.
 
@@ -51,7 +57,7 @@ Il progetto dedicato love e gia attivo. Restano da completare i controlli di ril
 6. Eventi personali inviati come singolo aggiornamento e singola notifica. Diario e organizzazione restano silenziosi.
 7. Test con due account e un terzo estraneo, su iOS e Android. Verificare che il terzo account non possa leggere o modificare dati della coppia.
 
-La funzione `shouldNotifyPartner` fissa la regola, ma non invia notifiche. Una futura coda server deve rendere gli invii idempotenti e non affidare le autorizzazioni al client.
+La funzione `shouldNotifyPartner` fissa la regola, ma non invia notifiche. La coda privata è installata. Il dispatcher esterno è scritto e testato ma non attivo, in attesa di approvazione esplicita.
 
 ## Logo
 

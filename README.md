@@ -4,7 +4,7 @@ Uno spazio per due, per sentirsi vicini e organizzare la vita insieme.
 
 **love** è un progetto di app per **iOS e Android** dedicata alla coppia. Due account collegati condividono stati d’animo, pensieri, gesti affettuosi, ricordi e attività quotidiane.
 
-> **Stato del progetto:** app Expo/React Native per iOS e Android collegata al progetto Supabase love. Database, permessi, inviti e gestione dei conflitti sono installati e verificati anche sul servizio reale. Restano il collaudo completo su due telefoni, la consegna delle email di conferma e le notifiche push. Vedi [i controlli eseguiti](docs/LIVE-CHECKS.md).
+> **Stato del progetto:** app Expo/React Native per iOS e Android collegata al progetto Supabase love. Database, permessi, inviti e gestione dei conflitti sono installati e verificati anche sul servizio reale. Calendario a griglia, date italiane, recupero password, cuore animato e reset quotidiano sono implementati. Restano la configurazione del ritorno email, il collaudo completo su due telefoni e l’attivazione autorizzata delle notifiche push. Vedi [i controlli eseguiti](docs/LIVE-CHECKS.md).
 
 **Logo:** un cuore giallo su fondo avorio 💛.
 
@@ -24,6 +24,8 @@ npm start
 Per controllare il progetto: `npm run typecheck`, `npm test` e `npx expo export --platform all`.
 
 Vedi [la guida di sviluppo](docs/DEVELOPMENT.md) per funzioni già implementate, limiti e prossimo passo. I contenuti locali non vengono importati automaticamente nello spazio online. Vedi [come attivare il collegamento](docs/SYNC.md).
+
+La prova aggiornata è disponibile su [love 💛](https://love-prova-cuore-giallo.thisable.chatgpt.site). Vedi i passaggi ancora necessari per [email](docs/AUTH-SETUP.md) e [notifiche di sistema](docs/NOTIFICATIONS.md).
 
 ## Come funziona
 
@@ -51,10 +53,9 @@ Le pagine sono ordinate per data e possono essere segnate come preferite. Nuove 
 ## Spazio condiviso
 
 - **Calendario:** appuntamenti, anniversari e impegni, per organizzare il tempo insieme.
-- **Promemoria:** cose da ricordare e attività da fare.
 - **Liste:** spesa, film da vedere, cose da fare e posti da visitare.
 - **Idee per uscire:** proposte da raccogliere e scegliere insieme.
-- **Obiettivi di coppia:** un viaggio da organizzare o una somma da mettere da parte.
+- **Obiettivi di coppia:** un progetto da realizzare, con una data «entro il».
 
 Aggiunte e modifiche in queste sezioni si sincronizzano in silenzio. Un indicatore “Novità” segnala nell’app i contenuti aggiunti o aggiornati dal partner.
 

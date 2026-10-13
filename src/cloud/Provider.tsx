@@ -5,7 +5,7 @@ import { randomUUID } from 'expo-crypto';
 import { emptyState, type State, type Status } from '../domain';
 import { configured, supabase } from './client';
 import { diffState, mergeSpace, projectSpace, readSpace, type Space } from './model';
-type Cloud={configured:boolean;active:boolean;demo:boolean;setDemo:(value:boolean)=>void;ready:boolean;session:Session|null;space:Space|null;data:State;partnerStatus:Status|null;connected:boolean;error:string;reload:()=>Promise<void>;save:(next:State)=>Promise<void>};
+type Cloud={configured:boolean;active:boolean;demo:boolean;setDemo:(value:boolean)=>void;recovery:boolean;setRecovery:(value:boolean)=>void;ready:boolean;session:Session|null;space:Space|null;data:State;partnerStatus:Status|null;connected:boolean;error:string;reload:()=>Promise<void>;save:(next:State)=>Promise<void>};
 const Context=createContext<Cloud|null>(null);
 export function explain(error:unknown):string {
   const e=error as {code?:string;message?:string};
@@ -17,6 +17,7 @@ export function explain(error:unknown):string {
 }
 export function CloudProvider({children}:React.PropsWithChildren){
   const [demo,setDemo]=useState(false);
+  const [recovery,setRecovery]=useState(false);
   const [session,setSession]=useState<Session|null>(null),[space,setSpace]=useState<Space|null>(null);
   const [ready,setReady]=useState(!configured),[error,setError]=useState(''),[connected,setConnected]=useState(false);
   const actorRef=useRef<string|null>(null);
@@ -31,7 +32,7 @@ export function CloudProvider({children}:React.PropsWithChildren){
   useEffect(()=>{
     aliveRef.current=true;if(!supabase)return;
     const accept=(next:Session|null)=>{if(!aliveRef.current)return;if(actorRef.current!==next?.user.id){actorRef.current=next?.user.id??null;setSpace(null);setError('');setReady(!next);}setSession(next);};
-    const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,next)=>accept(next));
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((event,next)=>{if(event==='PASSWORD_RECOVERY')setRecovery(true);if(event==='SIGNED_OUT')setRecovery(false);accept(next);});
     supabase.auth.getSession().then(({data,error:e})=>{if(e){if(aliveRef.current){setError(explain(e));setReady(true);}}else accept(data.session);}).catch(e=>{if(aliveRef.current){setError(explain(e));setReady(true);}});
     const foreground=AppState.addEventListener('change',state=>{if(state==='active')supabase?.auth.startAutoRefresh();else supabase?.auth.stopAutoRefresh();});
     supabase.auth.startAutoRefresh();
@@ -57,7 +58,7 @@ export function CloudProvider({children}:React.PropsWithChildren){
     const saved=readSpace(result.data);if(!saved)throw new Error('Salvataggio non confermato.');
     if(aliveRef.current&&actorRef.current===actor){setSpace(previous=>mergeSpace(previous,saved));setError('');}
   }
-  const value:Cloud={configured,active:!demo&&configured&&Boolean(session&&space),demo,setDemo,ready,session,space,data:demo?emptyState:projected.state,partnerStatus:demo?null:projected.partnerStatus,connected,error:demo?'':error,reload,save};
+  const value:Cloud={configured,active:!demo&&configured&&Boolean(session&&space),demo,setDemo,recovery,setRecovery,ready,session,space,data:demo?emptyState:projected.state,partnerStatus:demo?null:projected.partnerStatus,connected,error:demo?'':error,reload,save};
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 export function useCloud(){const context=useContext(Context);if(!context)throw new Error('CloudProvider mancante.');return context;}
