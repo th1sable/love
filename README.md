@@ -8,6 +8,10 @@ Uno spazio per due, per sentirsi vicini e organizzare la vita insieme.
 
 **Logo:** un cuore giallo su fondo avorio 💛.
 
+## Prova senza account
+
+Nella schermata iniziale tocca **Prova senza account**. Puoi provare stati d’animo, gesti, pagine del diario e liste: i dati restano sul dispositivo o nel browser. Nessun contenuto viene inviato al partner. In **Profilo**, tocca **Esci dalla prova e accedi** per usare lo spazio online. I dati della prova non vengono importati automaticamente. Le notifiche push non sono ancora attive.
+
 ## Avvio della prima versione
 
 Richiede Node.js 22.13 o successivo.

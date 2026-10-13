@@ -5,7 +5,7 @@ import { randomUUID } from 'expo-crypto';
 import { emptyState, type State, type Status } from '../domain';
 import { configured, supabase } from './client';
 import { diffState, mergeSpace, projectSpace, readSpace, type Space } from './model';
-type Cloud={configured:boolean;active:boolean;ready:boolean;session:Session|null;space:Space|null;data:State;partnerStatus:Status|null;connected:boolean;error:string;reload:()=>Promise<void>;save:(next:State)=>Promise<void>};
+type Cloud={configured:boolean;active:boolean;demo:boolean;setDemo:(value:boolean)=>void;ready:boolean;session:Session|null;space:Space|null;data:State;partnerStatus:Status|null;connected:boolean;error:string;reload:()=>Promise<void>;save:(next:State)=>Promise<void>};
 const Context=createContext<Cloud|null>(null);
 export function explain(error:unknown):string {
   const e=error as {code?:string;message?:string};
@@ -16,6 +16,7 @@ export function explain(error:unknown):string {
   return 'Non riesco a collegarmi. Controlla la connessione e riprova.';
 }
 export function CloudProvider({children}:React.PropsWithChildren){
+  const [demo,setDemo]=useState(false);
   const [session,setSession]=useState<Session|null>(null),[space,setSpace]=useState<Space|null>(null);
   const [ready,setReady]=useState(!configured),[error,setError]=useState(''),[connected,setConnected]=useState(false);
   const actorRef=useRef<string|null>(null);
@@ -56,7 +57,7 @@ export function CloudProvider({children}:React.PropsWithChildren){
     const saved=readSpace(result.data);if(!saved)throw new Error('Salvataggio non confermato.');
     if(aliveRef.current&&actorRef.current===actor){setSpace(previous=>mergeSpace(previous,saved));setError('');}
   }
-  const value:Cloud={configured,active:configured&&Boolean(session&&space),ready,session,space,data:projected.state,partnerStatus:projected.partnerStatus,connected,error,reload,save};
+  const value:Cloud={configured,active:!demo&&configured&&Boolean(session&&space),demo,setDemo,ready,session,space,data:demo?emptyState:projected.state,partnerStatus:demo?null:projected.partnerStatus,connected,error:demo?'':error,reload,save};
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 export function useCloud(){const context=useContext(Context);if(!context)throw new Error('CloudProvider mancante.');return context;}

@@ -7,13 +7,14 @@ function Action({label,onPress,busy=false}:{label:string;onPress:()=>void;busy?:
 function Input({label,value,set,secret=false}:{label:string;value:string;set:(v:string)=>void;secret?:boolean}){return <View style={{marginTop:18}}><Text style={styles.label}>{label}</Text><TextInput accessibilityLabel={label} value={value} onChangeText={set} secureTextEntry={secret} autoCapitalize="none" autoCorrect={false} keyboardType={label==='Email'?'email-address':'default'} maxLength={secret?128:160} style={styles.input}/></View>;}
 export function CloudGate({children}:React.PropsWithChildren){
   const cloud=useCloud();
-  if(!cloud.configured)return children;
+  if(!cloud.configured||cloud.demo)return children;
   if(!cloud.ready)return <View style={styles.loading}><Text style={styles.heart}>💛</Text><ActivityIndicator color="#B38319"/><Text style={styles.text}>Apro il vostro spazio…</Text></View>;
   if(!cloud.session)return <Auth/>;
   if(!cloud.space)return <Pairing/>;
   return children;
 }
 function Auth(){
+  const cloud=useCloud();
   const [email,setEmail]=useState(''),[password,setPassword]=useState(''),[register,setRegister]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(''),[note,setNote]=useState('');
   async function enter(){
     if(!supabase||busy)return;
@@ -22,7 +23,7 @@ function Auth(){
     try{const result=register?await supabase.auth.signUp({email:email.trim(),password}):await supabase.auth.signInWithPassword({email:email.trim(),password});if(result.error)throw result.error;if(register&&!result.data.session){setNote('Ti abbiamo inviato un’email. Conferma l’indirizzo, poi torna qui ed entra.');setRegister(false);setPassword('');}}
     catch(e){setError(explain(e));}finally{setBusy(false);}
   }
-  return <Frame title={register?'Il vostro spazio\ninizia qui.':'Bentornato\nnel vostro mondo.'}><Text style={styles.text}>Due account personali, un unico spazio da condividere.</Text><Input label="Email" value={email} set={setEmail}/><Input label="Password" value={password} set={setPassword} secret/>{!!error&&<Text accessibilityRole="alert" style={styles.error}>{error}</Text>}{!!note&&<Text style={styles.note}>{note}</Text>}<Action label={busy?'Un momento…':register?'Crea il mio account':'Entra 💛'} onPress={()=>void enter()} busy={busy}/><Action label={register?'Ho gia un account':'Non ho un account'} onPress={()=>{setRegister(!register);setError('');setNote('');}} busy={busy}/></Frame>;
+  return <Frame title={register?'Il vostro spazio\ninizia qui.':'Bentornato\nnel vostro mondo.'}><Text style={styles.text}>Due account personali, un unico spazio da condividere.</Text><Input label="Email" value={email} set={setEmail}/><Input label="Password" value={password} set={setPassword} secret/>{!!error&&<Text accessibilityRole="alert" style={styles.error}>{error}</Text>}{!!note&&<Text style={styles.note}>{note}</Text>}<Action label={busy?'Un momento…':register?'Crea il mio account':'Entra 💛'} onPress={()=>void enter()} busy={busy}/><Action label={register?'Ho gia un account':'Non ho un account'} onPress={()=>{setRegister(!register);setError('');setNote('');}} busy={busy}/><View style={styles.divider}/><Text style={styles.text}>Vuoi prima dare un’occhiata? La prova salva solo su questo dispositivo e non invia nulla alla tua persona.</Text><Action label="Prova senza account" onPress={()=>cloud.setDemo(true)}/></Frame>;
 }
 function Pairing(){
   const cloud=useCloud();const [name,setName]=useState(''),[code,setCode]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState('');
