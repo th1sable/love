@@ -1,2 +1,3 @@
 import { Stack } from 'expo-router';
-export default function Layout(){return <Stack screenOptions={{headerShown:false,animation:'fade'}}/>;}
+import { CloudProvider } from '../cloud/Provider';
+export default function Layout(){return <CloudProvider><Stack screenOptions={{headerShown:false,animation:'fade'}}/></CloudProvider>;}

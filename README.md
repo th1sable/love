@@ -4,7 +4,7 @@ Uno spazio per due, per sentirsi vicini e organizzare la vita insieme.
 
 **love** è un progetto di app per **iOS e Android** dedicata alla coppia. Due account collegati condividono stati d’animo, pensieri, gesti affettuosi, ricordi e attività quotidiane.
 
-> **Stato del progetto:** prima versione locale con Expo e React Native per iOS e Android. Stati d’animo, gesti, diario testuale e organizzazione si salvano sul dispositivo. Account, sincronizzazione tra telefoni e notifiche non sono ancora attivi; le sezioni seguenti descrivono anche il comportamento previsto della versione collegata.
+> **Stato del progetto:** app Expo/React Native per iOS e Android. La versione locale funziona senza configurazione. Il codice per account, inviti e sincronizzazione Supabase è implementato e verificato con test locali; il progetto online deve ancora essere attivato. Le notifiche push non vengono ancora inviate. Vedi [la guida alla sincronizzazione](docs/SYNC.md).
 
 **Logo:** un cuore giallo su fondo avorio 💛.
 
@@ -19,7 +19,7 @@ npm start
 
 Per controllare il progetto: `npm run typecheck`, `npm test` e `npx expo export --platform all`.
 
-Vedi [la guida di sviluppo](docs/DEVELOPMENT.md) per funzioni già implementate, limiti e prossimo passo. I contenuti locali non vengono ancora inviati al partner.
+Vedi [la guida di sviluppo](docs/DEVELOPMENT.md) per funzioni già implementate, limiti e prossimo passo. I contenuti locali non vengono importati automaticamente nello spazio online. Vedi [come attivare il collegamento](docs/SYNC.md).
 
 ## Come funziona
 

@@ -1,0 +1,39 @@
+import React, { useState } from 'react';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { explain, useCloud } from './Provider';
+import { supabase } from './client';
+function Action({label,onPress,busy=false}:{label:string;onPress:()=>void;busy?:boolean}){return <Pressable accessibilityRole="button" disabled={busy} onPress={onPress} style={({pressed})=>[styles.button,(busy||pressed)&&{opacity:.5}]}><Text style={styles.buttonText}>{label}</Text></Pressable>;}
+function Input({label,value,set,secret=false}:{label:string;value:string;set:(v:string)=>void;secret?:boolean}){return <View style={{marginTop:18}}><Text style={styles.label}>{label}</Text><TextInput accessibilityLabel={label} value={value} onChangeText={set} secureTextEntry={secret} autoCapitalize="none" autoCorrect={false} keyboardType={label==='Email'?'email-address':'default'} maxLength={secret?128:160} style={styles.input}/></View>;}
+export function CloudGate({children}:React.PropsWithChildren){
+  const cloud=useCloud();
+  if(!cloud.configured)return children;
+  if(!cloud.ready)return <View style={styles.loading}><Text style={styles.heart}>💛</Text><ActivityIndicator color="#B38319"/><Text style={styles.text}>Apro il vostro spazio…</Text></View>;
+  if(!cloud.session)return <Auth/>;
+  if(!cloud.space)return <Pairing/>;
+  return children;
+}
+function Auth(){
+  const [email,setEmail]=useState(''),[password,setPassword]=useState(''),[register,setRegister]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(''),[note,setNote]=useState('');
+  async function enter(){
+    if(!supabase||busy)return;
+    if(!email.trim()||password.length<8){setError('Inserisci la tua email e una password di almeno 8 caratteri.');return;}
+    setBusy(true);setError('');setNote('');
+    try{const result=register?await supabase.auth.signUp({email:email.trim(),password}):await supabase.auth.signInWithPassword({email:email.trim(),password});if(result.error)throw result.error;if(register&&!result.data.session){setNote('Ti abbiamo inviato un’email. Conferma l’indirizzo, poi torna qui ed entra.');setRegister(false);setPassword('');}}
+    catch(e){setError(explain(e));}finally{setBusy(false);}
+  }
+  return <Frame title={register?'Il vostro spazio\ninizia qui.':'Bentornato\nnel vostro mondo.'}><Text style={styles.text}>Due account personali, un unico spazio da condividere.</Text><Input label="Email" value={email} set={setEmail}/><Input label="Password" value={password} set={setPassword} secret/>{!!error&&<Text accessibilityRole="alert" style={styles.error}>{error}</Text>}{!!note&&<Text style={styles.note}>{note}</Text>}<Action label={busy?'Un momento…':register?'Crea il mio account':'Entra 💛'} onPress={()=>void enter()} busy={busy}/><Action label={register?'Ho gia un account':'Non ho un account'} onPress={()=>{setRegister(!register);setError('');setNote('');}} busy={busy}/></Frame>;
+}
+function Pairing(){
+  const cloud=useCloud();const [name,setName]=useState(''),[code,setCode]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState('');
+  async function connect(join:boolean){if(!supabase||busy)return;if(!name.trim()||name.trim().length>80){setError('Inserisci un nome di massimo 80 caratteri.');return;}if(join&&!/^[a-f0-9]{32}$/i.test(code.trim())){setError('Incolla il codice completo ricevuto dalla tua persona.');return;}setBusy(true);setError('');try{const result=join?await supabase.rpc('accept_invite',{p_code:code.trim(),p_name:name.trim()}):await supabase.rpc('create_space',{p_name:name.trim()});if(result.error)throw result.error;await cloud.reload();}catch(e){setError(explain(e));}finally{setBusy(false);}}
+  return <Frame title={'Troviamoci,\nanche qui.'}><Text style={styles.text}>Uno di voi crea lo spazio. L’altro entra con il codice d’invito.</Text><Input label="Il tuo nome" value={name} set={setName}/>{!!(error||cloud.error)&&<Text accessibilityRole="alert" style={styles.error}>{error||cloud.error}</Text>}<Action label="Crea il nostro spazio" onPress={()=>void connect(false)} busy={busy}/><View style={styles.divider}/><Input label="Codice d’invito" value={code} set={setCode}/><Action label="Entra nello spazio della tua persona" onPress={()=>void connect(true)} busy={busy}/><Action label="Riprova il collegamento" onPress={()=>void cloud.reload()} busy={busy}/><Action label="Esci dall’account" onPress={()=>void supabase?.auth.signOut()} busy={busy}/></Frame>;
+}
+export function CloudConnection(){
+  const cloud=useCloud();const [code,setCode]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState('');
+  async function invite(){if(!supabase||busy)return;setBusy(true);setError('');try{const result=await supabase.rpc('issue_invite');if(result.error)throw result.error;setCode(String(result.data));}catch(e){setError(explain(e));}finally{setBusy(false);}}
+  async function logout(){setBusy(true);const result=await supabase?.auth.signOut();if(result?.error)setError(explain(result.error));setBusy(false);}
+  return <View style={styles.connection}><Text style={styles.heading}>{cloud.space?.members.length===2?'Siete collegati 💛':'Invita la tua persona'}</Text><Text style={styles.text}>{cloud.session?.user.email}</Text>{cloud.space?.members.length===1&&<><Text style={styles.text}>Il codice vale 24 ore e puo essere usato una sola volta. Generarne uno nuovo annulla il precedente.</Text><Action label={code?'Genera un nuovo invito':'Crea il codice d’invito'} onPress={()=>void invite()} busy={busy}/>{!!code&&<Text selectable style={styles.code}>{code}</Text>}</>}{!!error&&<Text style={styles.error}>{error}</Text>}<Action label="Aggiorna lo spazio" onPress={()=>void cloud.reload()} busy={busy}/><Text style={styles.text}>Gli aggiornamenti si sincronizzano. Le notifiche sul telefono saranno disponibili dopo l’attivazione del servizio di invio.</Text><Action label="Esci dall’account" onPress={()=>void logout()} busy={busy}/></View>;
+}
+function Frame({title,children}:React.PropsWithChildren<{title:string}>){return <SafeAreaView style={styles.root}><KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS==='ios'?'padding':undefined}><ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled"><Text style={styles.heart}>💛</Text><Text style={styles.brand}>love.</Text><Text style={styles.title}>{title}</Text>{children}</ScrollView></KeyboardAvoidingView></SafeAreaView>;}
+const styles=StyleSheet.create({root:{flex:1,backgroundColor:'#FAF8F2'},content:{padding:28,maxWidth:600,width:'100%',alignSelf:'center'},loading:{flex:1,alignItems:'center',justifyContent:'center',gap:18,backgroundColor:'#FAF8F2'},heart:{fontSize:54},brand:{fontSize:25,fontWeight:'800',color:'#433828',marginTop:12},title:{fontSize:35,lineHeight:42,color:'#352E24',fontWeight:'600',marginTop:35,marginBottom:18},text:{fontSize:14,lineHeight:23,color:'#8A7B62',marginTop:10},label:{fontSize:12,color:'#7B6B50',fontWeight:'600',marginBottom:8},input:{borderRadius:14,borderWidth:1,borderColor:'#EAE3D5',padding:16,color:'#352E24',backgroundColor:'#FFF',fontSize:15},button:{padding:16,borderRadius:14,backgroundColor:'#F5D367',alignItems:'center',marginTop:16},buttonText:{color:'#51401B',fontWeight:'700',fontSize:14},error:{color:'#8E3C27',backgroundColor:'#FFE8E1',borderRadius:12,padding:14,marginTop:15,lineHeight:22},note:{color:'#56623A',padding:14,lineHeight:23},divider:{height:1,backgroundColor:'#EAE3D5',marginTop:30},connection:{backgroundColor:'#FFF',padding:22,borderRadius:22,marginTop:16,borderWidth:1,borderColor:'#EFEADF'},heading:{fontSize:17,fontWeight:'600',color:'#433828'},code:{fontSize:16,fontWeight:'600',color:'#795D1C',padding:16,backgroundColor:'#FFF1BD',borderRadius:14,marginTop:15}});

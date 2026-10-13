@@ -1,0 +1,11 @@
+import 'react-native-url-polyfill/auto';
+import { createClient, processLock } from '@supabase/supabase-js';
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
+import { secureSessionStorage } from './secureSession';
+const url=process.env.EXPO_PUBLIC_SUPABASE_URL;
+const key=process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+export const configured=Boolean(url&&key);
+const nativeStorage=secureSessionStorage({getItem:SecureStore.getItemAsync,setItem:SecureStore.setItemAsync,removeItem:SecureStore.deleteItemAsync});
+export const supabase=configured?createClient(url!,key!,{auth:{storage:Platform.OS==='web'?AsyncStorage:nativeStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,lock:processLock}}):null;

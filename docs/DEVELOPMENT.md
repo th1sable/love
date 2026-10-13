@@ -29,9 +29,13 @@ npx expo export --platform all
 - Salvataggio su dispositivo, caricamento e gestione degli errori.
 - Icona a cuore giallo per iOS, Android e web.
 
-## Non ancora disponibile
+## Modalita collegata
 
-Account, invito, sincronizzazione fra telefoni, notifiche push, foto, risposte alle pagine, avvisi programmati, indicatore delle novita' del partner, gestione avanzata degli obiettivi economici e pubblicazione negli store.
+Account, inviti e sincronizzazione sono implementati nel codice. La guida docs/SYNC.md descrive l'attivazione del progetto dedicato e i test locali eseguiti. Senza configurazione resta attiva la versione locale.
+
+## Da attivare o completare
+
+Attivazione del servizio online e collaudo su due telefoni, recupero password, notifiche push, foto, risposte alle pagine, avvisi programmati, indicatore delle novita' del partner, gestione avanzata degli obiettivi economici e pubblicazione negli store.
 
 Non vengono simulati messaggi ricevuti dal partner. I gesti salvati in questa versione non sono inviati ad altri telefoni. Il banner nella UI comunica il limite.
 
@@ -55,6 +59,6 @@ La funzione `shouldNotifyPartner` fissa la regola, ma non invia notifiche. Una f
 
 ## Verifica e limiti
 
-TypeScript, ESLint, i tre test del dominio e l'esportazione dei bundle per iOS, Android e web sono stati verificati. L'esportazione non e' una build firmata e non sostituisce il collaudo su due telefoni reali.
+TypeScript, ESLint, i test del dominio, del collegamento e del database e l'esportazione dei bundle per iOS, Android e web sono stati verificati. L'esportazione non e' una build firmata e non sostituisce il collaudo su due telefoni reali.
 
 L'audit delle dipendenze ha rilevato anche avvisi negli strumenti Expo. Sono stati fissati `decode-uri-component` a 0.5.0 e `uuid` a 11.1.1 tramite override. Restano avvisi ereditati da `braces` 3.0.3 e `node-forge` 1.4.0: al momento della verifica non risultano versioni stabili successive nei rispettivi pacchetti. Ricontrollare gli aggiornamenti degli strumenti prima della distribuzione. Non usare aggiornamenti forzati che portino Expo a una versione incompatibile.
