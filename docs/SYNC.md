@@ -1,6 +1,6 @@
 # Collegamento tra i due telefoni
 
-Il codice della modalita collegata e pronto. Il progetto Supabase dedicato deve ancora essere creato e configurato: finche le variabili dell'app restano vuote, funziona la versione locale.
+Il progetto Supabase love e attivo a Francoforte e la modalita collegata e ora quella predefinita. cloud.config.json contiene soltanto l'URL e la chiave pubblica publishable. Le variabili ambiente possono sovrascrivere entrambi; EXPO_PUBLIC_LOCAL_MODE=true apre invece il prototipo locale.
 
 ## Preparato e verificato nel codice
 
@@ -14,7 +14,7 @@ Il codice della modalita collegata e pronto. Il progetto Supabase dedicato deve 
 - Sessione conservata con Expo SecureStore su iOS e Android, anche per valori lunghi. Sul web viene usato lo spazio locale del browser.
 - Blocco della compilazione se viene configurata una chiave secret o service_role invece della publishable.
 
-## Attivazione del servizio
+## Configurazione e prossimi controlli
 
 1. Scegliere l'organizzazione Supabase e confermare il costo indicato dal servizio prima di creare il progetto `love`.
 2. Usare un progetto dedicato. Non applicare lo schema ai progetti delle altre app.
@@ -24,6 +24,10 @@ Il codice della modalita collegata e pronto. Il progetto Supabase dedicato deve 
 6. Copiare `.env.example` in `.env` e inserire URL e chiave **publishable** del progetto. Non inserire chiavi segrete nel codice dell'app o nella repository.
 7. Riavviare Expo. Dopo la registrazione, una persona crea lo spazio e genera il codice nel Profilo; l'altra incolla il codice nella schermata di collegamento.
 8. Provare le modifiche in entrambe le direzioni su un iPhone e un Android. Verificare anche riconnessione, uscita dall'account e modifica simultanea della stessa pagina.
+
+Lo schema iniziale e l'aggiornamento hardening sono gia applicati al progetto love. Non eseguirli nuovamente sullo stesso database. I passaggi di creazione elencati sopra servono per un eventuale altro progetto.
+
+La conferma email e attiva. Prima di usare gli account di entrambi, verificare la consegna delle email: il servizio email predefinito Supabase e limitato agli indirizzi del team. Per altri indirizzi occorre configurare SMTP: https://supabase.com/docs/guides/auth/auth-smtp
 
 Il salvataggio locale della prima versione viene conservato. Non viene importato automaticamente nello spazio online.
 
@@ -37,4 +41,4 @@ La coda non invia ancora notifiche push. Per attivarle servono la registrazione 
 
 `npm test` include test con Postgres locale tramite PGlite: permessi delle righe, esclusione di account esterni, limite di due membri, inviti invalidati e non riutilizzabili, validazione delle date, conflitti di versione e coda delle notifiche. Si verifica anche che una chiave segreta blocchi la compilazione e che una sessione lunga o una scrittura interrotta non corrompa quella gia salvata.
 
-Questi test non sostituiscono il collaudo del progetto Supabase reale, dei WebSocket o delle notifiche su dispositivi fisici. Il recupero password, le foto del diario, le risposte alle pagine, gli indicatori di novita e la pubblicazione negli store sono ancora da completare.
+Sono stati eseguiti anche controlli sul database Supabase reale, con dati temporanei annullati a fine test, e controlli HTTP delle API senza login. Il servizio rifiuta l'accesso anonimo ai contenuti. Restano da collaudare i WebSocket su due dispositivi, l'intero flusso email e le notifiche su dispositivi fisici. Il recupero password, le foto del diario, le risposte alle pagine, gli indicatori di novita e la pubblicazione negli store sono ancora da completare.

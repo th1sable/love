@@ -12,6 +12,7 @@ test('Postgres: coppia privata, invito singolo, conflitti e regole delle notific
   const a=randomUUID(),b=randomUUID(),c=randomUUID(),unconfirmed=randomUUID();
   await db.query('insert into auth.users values($1,now()),($2,now()),($3,now()),($4,null)',[a,b,c,unconfirmed]);
   await db.exec(await readFile(new URL('../supabase/schema.sql',import.meta.url),'utf8'));
+  await db.exec(await readFile(new URL('../supabase/hardening.sql',import.meta.url),'utf8'));
   let currentActor='';
   async function actor(id:string){currentActor=id;await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role authenticated');}
   const scalar=async(sql:string,args:unknown[]=[])=>{const result=await db.query<Record<string,unknown>>(sql,args);return Object.values(result.rows[0])[0];};

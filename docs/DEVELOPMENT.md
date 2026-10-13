@@ -31,17 +31,17 @@ npx expo export --platform all
 
 ## Modalita collegata
 
-Account, inviti e sincronizzazione sono implementati nel codice. La guida docs/SYNC.md descrive l'attivazione del progetto dedicato e i test locali eseguiti. Senza configurazione resta attiva la versione locale.
+Account, inviti e sincronizzazione sono collegati al progetto love. La guida docs/SYNC.md descrive la configurazione e i test eseguiti. La modalita collegata e predefinita; EXPO_PUBLIC_LOCAL_MODE=true permette di riaprire il prototipo locale.
 
 ## Da attivare o completare
 
-Attivazione del servizio online e collaudo su due telefoni, recupero password, notifiche push, foto, risposte alle pagine, avvisi programmati, indicatore delle novita' del partner, gestione avanzata degli obiettivi economici e pubblicazione negli store.
+Collaudo su due telefoni e configurazione/consegna delle email di conferma, recupero password, notifiche push, foto, risposte alle pagine, avvisi programmati, indicatore delle novita' del partner, gestione avanzata degli obiettivi economici e pubblicazione negli store.
 
 Non vengono simulati messaggi ricevuti dal partner. I gesti salvati in questa versione non sono inviati ad altri telefoni. Il banner nella UI comunica il limite.
 
 ## Prossimo passo: servizio della coppia
 
-Preparare un progetto Supabase dedicato a love, separato dalle altre app. Prima dell'attivazione:
+Il progetto dedicato love e gia attivo. Restano da completare i controlli di rilascio e le funzioni sotto indicate:
 
 1. Account e sessioni protette, conferma dell'email e recupero password.
 2. Inviti con scadenza e uso singolo; massimo due membri per coppia.
