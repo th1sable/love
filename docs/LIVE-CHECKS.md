@@ -5,8 +5,8 @@ Progetto Supabase love: fpkhmzmmlvdwaxgyycdh. Progetto EAS: @thisable/love, 93d7
 ## Verifiche concluse
 
 - 16 test automatici di dominio, date e integrazione del database passati.
-- TypeScript ed ESLint passati.
-- Tre prove Playwright in Chrome mobile (390×844, Europe/Rome) passate: cuore unico nelle cinque sezioni e stato persistente; creazione diario e impegno; album con selezione foto, visualizzazione e conservazione dopo riapertura. Sono prove locali, non una ricezione push su telefoni fisici.
+- TypeScript ed ESLint passati. Expo Doctor: 21/21 controlli passati nella configurazione aggiornata.
+- Quattro prove Playwright in Chrome mobile (390×844, Europe/Rome) passate: cuore unico nelle cinque sezioni e stato persistente; creazione diario e impegno; album con selezione foto, visualizzazione e conservazione dopo riapertura; password visibile/nascosta e recupero senza email. Sono prove locali, non una ricezione push su telefoni fisici.
 - Verifiche SQL sul servizio reale per inviti, massimo due membri, isolamento dagli estranei, conflitti, idempotenza, aggiornamenti silenziosi e album privati. Transazioni annullate: zero utenti di prova residui.
 - Dispatcher push installato; pg_net/pg_cron e timer ogni minuto attivi, esecuzione negata ai client. Verifica: zero dispositivi attivi, zero consegne. Nessuna notifica reale inviata nei test.
 

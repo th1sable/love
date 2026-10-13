@@ -23,6 +23,8 @@ npm start
 
 Per controllare il progetto: `npm run typecheck`, `npm test` e `npx expo export --platform all`.
 
+Per le versioni installabili e i requisiti delle notifiche, vedi [rilascio nativo](docs/NATIVE-RELEASE.md).
+
 Vedi [la guida di sviluppo](docs/DEVELOPMENT.md) per funzioni già implementate, limiti e prossimo passo. I contenuti locali non vengono importati automaticamente nello spazio online. Vedi [come attivare il collegamento](docs/SYNC.md).
 
 La prova aggiornata è disponibile su [love 💛](https://love-prova-cuore-giallo.thisable.chatgpt.site). Vedi i passaggi ancora necessari per [email](docs/AUTH-SETUP.md) e [notifiche di sistema](docs/NOTIFICATIONS.md).
