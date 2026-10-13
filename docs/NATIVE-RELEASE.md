@@ -5,7 +5,7 @@
 Progetto EAS: https://expo.dev/accounts/thisable/projects/love
 Build iniziale: https://expo.dev/accounts/thisable/projects/love/builds/1d0e677a-648d-40a8-91fb-44336ef8f7b5
 
-Build preview interna con APK e keystore remoto creato da EAS. Attendere FINISHED prima di installare. Il solo caricamento dei sorgenti non è un APK.
+Build preview interna con APK e keystore remoto creato da EAS. Build FINISHED il 13 ottobre 2026 alle 22:03 UTC. APK firmato: https://expo.dev/artifacts/eas/-QemcGhlyNpX05Yozy0WSSB5ESyMXd5Pk2RS6DcYYDs.apk. Il file consente l’installazione su Android; nessuna prova su un telefono fisico è stata eseguita in questa sessione.
 
 Per ricevere push Android servono un’app Firebase per com.th1sable.love, il file google-services.json nella variabile file EAS GOOGLE_SERVICES_JSON e la credenziale FCM V1 caricata nel progetto EAS. Nessuna credenziale amministrativa va nel codice. La build iniziale consente il collaudo delle funzioni, ma la configurazione Firebase non è ancora disponibile.
 

@@ -8,6 +8,10 @@ Uno spazio per due, per sentirsi vicini e organizzare la vita insieme.
 
 **Logo:** un cuore giallo su fondo avorio 💛.
 
+## Installa su Android
+
+[Scarica l’APK firmato di love](https://expo.dev/artifacts/eas/-QemcGhlyNpX05Yozy0WSSB5ESyMXd5Pk2RS6DcYYDs.apk). Build completata il 13 ottobre 2026. Per la prima prova scegli **Prova senza account**. La configurazione email e le credenziali push devono ancora essere completate per il collaudo tra i due telefoni. La versione iPhone richiede l’accesso Apple.
+
 ## Prova senza account
 
 Nella schermata iniziale tocca **Prova senza account**. Puoi provare stati d’animo, gesti, pagine del diario e liste: i dati restano sul dispositivo o nel browser. Nessun contenuto viene inviato al partner. In **Profilo**, tocca **Esci dalla prova e accedi** per usare lo spazio online. I dati della prova non vengono importati automaticamente. Le notifiche della prova locale non vengono inviate.
