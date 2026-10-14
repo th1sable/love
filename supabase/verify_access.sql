@@ -21,9 +21,14 @@ begin
   if not rejected then raise exception 'third member accepted'; end if;
   if (select count(*) from public.couple_members)<>0 then raise exception 'membership leaked'; end if;
   if public.get_space() is not null then raise exception 'space leaked'; end if;
+  rejected:=false;
+  begin perform public.get_push_status(); exception when insufficient_privilege then rejected:=true; end;
+  if not rejected then raise exception 'notification readiness leaked'; end if;
   perform set_config('request.jwt.claim.sub',a::text,true);
   perform set_config('request.jwt.claims',jsonb_build_object('sub',a,'role','authenticated')::text,true);
   snap:=public.save_entries(pair,a,req,jsonb_build_array(jsonb_build_object('kind','status','id',a::text,'expected_version',0,'payload',jsonb_build_object('mood','Felice','need','Parlare','thought','Test'))));
+  if snap->'pushStatus' <> jsonb_build_object('paired',true,'ownDevices',0,'partnerDevices',0,'currentDevice',false,'dispatchEnabled',true) then raise exception 'notification readiness missing from save'; end if;
+  if public.get_push_status() <> snap->'pushStatus' then raise exception 'notification readiness differs'; end if;
   perform public.save_entries(pair,a,req,jsonb_build_array(jsonb_build_object('kind','status','id',a::text,'expected_version',0,'payload',jsonb_build_object('mood','Felice','need','Parlare','thought','Test'))));
   perform public.save_entries(pair,a,gen_random_uuid(),'[{"kind":"diary","id":"live-check-page","expected_version":0,"payload":{"title":"Test","body":"Temporary","date":"2026-10-13","favorite":false}}]'::jsonb);
   perform set_config('request.jwt.claim.sub',b::text,true);

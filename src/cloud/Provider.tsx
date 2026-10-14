@@ -4,8 +4,9 @@ import { type Session } from '@supabase/supabase-js';
 import { randomUUID } from 'expo-crypto';
 import { emptyState, type State, type Status } from '../domain';
 import { configured, supabase } from './client';
+import { readPushReadiness, type PushReadiness } from './pushReadiness';
 import { diffState, mergeSpace, projectSpace, readSpace, type Space } from './model';
-type Cloud={configured:boolean;active:boolean;demo:boolean;setDemo:(value:boolean)=>void;recovery:boolean;setRecovery:(value:boolean)=>void;ready:boolean;session:Session|null;space:Space|null;data:State;partnerStatus:Status|null;connected:boolean;error:string;reload:()=>Promise<void>;save:(next:State)=>Promise<void>};
+type Cloud={configured:boolean;active:boolean;demo:boolean;setDemo:(value:boolean)=>void;recovery:boolean;setRecovery:(value:boolean)=>void;ready:boolean;session:Session|null;space:Space|null;data:State;partnerStatus:Status|null;connected:boolean;error:string;reload:()=>Promise<void>;save:(next:State)=>Promise<PushReadiness|null>};
 const Context=createContext<Cloud|null>(null);
 export function explain(error:unknown):string {
   const e=error as {code?:string;message?:string};
@@ -48,15 +49,16 @@ export function CloudProvider({children}:React.PropsWithChildren){
     return()=>{clearInterval(timer);foreground.remove();void client.removeChannel(channel);setConnected(false);};
   },[session,space?.id,reload]);
   const projected=useMemo(()=>space&&session?projectSpace(space,session.user.id):{state:emptyState,partnerStatus:null},[space,session]);
-  async function save(next:State){
+  async function save(next:State):Promise<PushReadiness|null>{
     if(!supabase||!session||!space)throw new Error('Spazio non collegato.');
     const actor=session.user.id;
-    const changes=diffState(projected.state,next,space,actor);if(changes.length===0)return;
+    const changes=diffState(projected.state,next,space,actor);if(changes.length===0)return null;
     const requestId=randomUUID();
     const result=await supabase.rpc('save_entries',{p_space_id:space.id,p_actor_id:actor,p_request_id:requestId,p_changes:changes});
     if(result.error){void reload();throw result.error;}
     const saved=readSpace(result.data);if(!saved)throw new Error('Salvataggio non confermato.');
     if(aliveRef.current&&actorRef.current===actor){setSpace(previous=>mergeSpace(previous,saved));setError('');}
+    try{return readPushReadiness(result.data?.pushStatus);}catch{return null;}
   }
   const value:Cloud={configured,active:!demo&&configured&&Boolean(session&&space),demo,setDemo,recovery,setRecovery,ready,session,space,data:demo?emptyState:projected.state,partnerStatus:demo?null:projected.partnerStatus,connected,error:demo?'':error,reload,save};
   return <Context.Provider value={value}>{children}</Context.Provider>;
