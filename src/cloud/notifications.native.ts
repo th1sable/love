@@ -7,12 +7,6 @@ import { supabase } from './client';
 Notifications.setNotificationHandler({handleNotification:async()=>({shouldShowBanner:true,shouldShowList:true,shouldPlaySound:true,shouldSetBadge:false})});
 const KEY='love.push.installation';
 async function installation(){let id=await SecureStore.getItemAsync(KEY);if(!id){id=randomUUID();await SecureStore.setItemAsync(KEY,id);}return id;}
-export async function getDeviceNotificationState(){
-  const deviceId=await SecureStore.getItemAsync(KEY);
-  if(Constants.executionEnvironment===ExecutionEnvironment.StoreClient)return {deviceId,permission:'expo-go' as const};
-  const permission=await Notifications.getPermissionsAsync();
-  return {deviceId,permission:permission.granted?'granted' as const:permission.status===Notifications.PermissionStatus.DENIED?'denied' as const:'unknown' as const};
-}
 export async function enableSystemNotifications():Promise<string>{
   if(!supabase)throw new Error('Accedi prima al tuo account.');
   const actor=(await supabase.auth.getSession()).data.session?.user.id;
@@ -24,13 +18,7 @@ export async function enableSystemNotifications():Promise<string>{
   let permission=await Notifications.getPermissionsAsync();
   if(!permission.granted)permission=await Notifications.requestPermissionsAsync();
   if(!permission.granted)return 'Le notifiche sono disattivate nelle impostazioni del telefono. Puoi abilitarle da lì.';
-  let token:string;
-  try{token=(await Notifications.getExpoPushTokenAsync({projectId})).data;}
-  catch(error){
-    const message=error instanceof Error?error.message:'';
-    if(/firebase|fcm|default.*app.*initializ/i.test(message))throw new Error('Il collegamento notifiche non è ancora pronto in questa versione. I contenuti restano condivisi nell’app.');
-    throw new Error('Non riesco a collegare le notifiche. Controlla la connessione e riprova.');
-  }
+  const token=(await Notifications.getExpoPushTokenAsync({projectId})).data;
   if((await supabase.auth.getSession()).data.session?.user.id!==actor)throw new Error('Il tuo account è cambiato. Riprova.');
   const result=await supabase.rpc('register_push_device',{p_device_id:await installation(),p_token:token,p_platform:Platform.OS});
   if(result.error)throw new Error('Non riesco a collegare le notifiche al tuo account. Riprova.');

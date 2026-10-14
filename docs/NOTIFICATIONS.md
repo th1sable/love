@@ -27,13 +27,3 @@ Per riprodurre la configurazione: abilitare pg_net e pg_cron, applicare `notific
 Con entrambi i telefoni registrati, inviare uno stato e un gesto mentre il destinatario ha l’app chiusa; verificare banner e suono. Controllare che modificare diario e calendario non generi avvisi. Ripetere dopo logout, con permessi negati e dopo mezzanotte.
 
 Fonti: [Expo Notifications SDK 57](https://docs.expo.dev/versions/v57.0.0/sdk/notifications/), [invio e ricevute Expo](https://docs.expo.dev/push-notifications/sending-notifications/), [pg_net](https://supabase.com/docs/guides/database/extensions/pg_net).
-
-## Controllo dei telefoni — aggiornamento del 14 ottobre 2026
-
-Nel Profilo il controllo mostra quanti telefoni propri e del partner sono collegati, il permesso sul dispositivo attuale e la disponibilità del servizio di invio. Si aggiorna al ritorno nell'app e con il pulsante Aggiorna. Questi dati indicano il collegamento: non certificano che il destinatario abbia ricevuto o letto un avviso.
-
-La funzione `get_push_status` è disponibile soltanto agli utenti confermati che appartengono a uno spazio. Non restituisce token, identificativi dei telefoni, messaggi o dati di altre coppie. `notification-status.sql` aggiunge anche la stessa informazione alla risposta di salvataggio, evitando un'altra richiesta dopo ogni gesto. Le versioni precedenti continuano a leggere i contenuti normalmente.
-
-Gli errori di collegamento Android vengono spiegati in italiano. Nessun errore successivo al salvataggio delle informazioni sulle notifiche trasforma un contenuto già salvato in un falso errore di scrittura.
-
-Verifiche: 18 test passati, TypeScript ed ESLint passati, esportazione iOS/Android/web riuscita, prova reale con transazione annullata e zero utenti di test residui. Il connettore non consente di modificare le impostazioni Auth e in questo ambiente il comando EAS whoami restituisce Not logged in. Le credenziali Firebase e Apple restano da completare. Nessuna nuova build installabile prodotta da questo aggiornamento.

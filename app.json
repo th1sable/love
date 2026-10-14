@@ -8,9 +8,13 @@
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.th1sable.love"
+      "bundleIdentifier": "com.th1sable.love",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#FAF8F2",
         "foregroundImage": "./assets/android-icon-foreground.png",
